@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+
+  ws-nestjs-api-book-bin:
+    restart: always
+    build:
+      context: ./.
+      dockerfile: ./Dockerfile.dev
+    image: local-ws-nestjs-api-book-bin-dev:latest
+    command: ['npm', 'run', 'start:dev']
+    container_name: ws-nestjs-api-book-bin-container
+    environment:
+        - loglevel=none
+    links:
+      - mongodb-primary
+      - redis
+    working_dir: "/usr/src/app"
+    volumes:
+        - "./.:/usr/src/app"
+        - "/usr/src/app/node_modules"
+    ports:
+        - "8080:8080"
+        - "5858:5858"
+
+  mongodb-primary:
+    image: 'bitnami/mongodb:4.0'
+    container_name: mongodb-primary
+    environment:
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_REPLICA_SET_NAME=bookBinRS
+    volumes:
+        - "../mongodb_master_data:/bitnami:rw"
+    ports:
+        - "27017:27017"
+
+  mongodb-secondary:
+    image: 'bitnami/mongodb:4.0'
+    container_name: mongodb-secondary
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_PRIMARY_HOST=mongodb-primary
+      - MONGODB_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
+      - MONGODB_REPLICA_SET_NAME=bookBinRS
+
+  mongodb-arbiter:
+    image: 'bitnami/mongodb:4.0'
+    container_name: mongodb-arbiter
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_REPLICA_SET_MODE=arbiter
+      - MONGODB_PRIMARY_HOST=mongodb-primary
+      - MONGODB_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-arbiter
+      - MONGODB_REPLICA_SET_NAME=bookBinRS
+
+  redis:
+    container_name: tokenholder
+    image: 'bitnami/redis:5.0'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - ../db-data/redis-data:/bitnami/redis/data
+
+volumes:
+  mongodb_master_data:
+    driver: local

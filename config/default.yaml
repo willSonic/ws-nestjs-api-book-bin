@@ -1,0 +1,44 @@
+express:
+    port: 8080
+    debug: 5858
+    host: ws-node-book-bin
+
+auth:
+    jwt_secret: 'UR4swimlane$'
+    jwt_short_time_secret: 'M@S0m3NU$'
+
+mongo:
+    port: 27017
+    replicaSetName: 'bookBinRS'
+    replicaPrimary: 'mongodb-primary'
+    dataBaseName: 'book-bin'
+    urlDocker: 'mongodb://mongodb-primary:27017/book-bin?replicaSet=bookBinRS'
+    #password
+    #login
+
+redis:
+    TTL: 86400
+    port: 6379
+    urlDocker: 'redis://tokenholder'
+    #password
+    #login
+
+waitListOpp:
+    expireTime: 60 #seconds
+
+#    tenDayMS:7*24*60*60*1000,
+#    //dev fun 2Hours
+#    twoHrMS:2*60*60*1000,
+#    //dev fun 10 minutes
+#    tenMinMS:10*60*1000,
+#    //wait time for response from waitlist request
+#    twoMinMS: 2*60*1000,
+borrowTime:
+    expireTime: 'twoHrMS'
+
+
+
+
+
+# none/debug/info
+loglevel: info
