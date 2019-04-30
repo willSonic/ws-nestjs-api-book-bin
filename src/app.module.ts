@@ -7,7 +7,7 @@ import { AuthenticationModule } from './domains/modules/authentication/authentic
 import { ProfilesModule } from './domains/modules/profiles/profiles.module';
 import { PorfilesController } from './porfiles/porfiles.controller';
 import { Profiles } from './profiles';
-import { UsersModule } from './domains/modules/users/users.module';
+import { UserModule } from './domains/modules/user/users.module';
 import { Users } from './users';
 import { BookedModule } from './domains/modules/booked/booked.module';
 import { InvetoriesModule } from './invetories/invetories.module';
@@ -17,7 +17,7 @@ import { CommentsModule } from './domains/modules/comments/comments.module';
 import { BookedExpireEventsModule } from './domains/modules/booked-expire-events/booked-expire-events.module';
 
 @Module({
-  imports: [BooksModule, AuthenticationModule, ProfilesModule, UsersModule, BookedModule, InvetoriesModule, InventoryModule, MessagesModule, CommentsModule, BookedExpireEventsModule],
+  imports: [BooksModule, AuthenticationModule, ProfilesModule, UserModule, BookedModule, InvetoriesModule, InventoryModule, MessagesModule, CommentsModule, BookedExpireEventsModule],
   controllers: [AppController, PorfilesController],
   providers: [AppService, Books, Profiles, Users],
 })
