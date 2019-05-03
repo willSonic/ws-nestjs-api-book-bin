@@ -6,6 +6,8 @@ express:
 auth:
     jwt_secret: 'UR4swimlane$'
     jwt_short_time_secret: 'M@S0m3NU$'
+    #(8*60*60) = 28800;
+    expireTime: 28800
 
 mongo:
     port: 27017

@@ -7,6 +7,7 @@ interface IExpressEnv{
 interface IJwtSecurityEnv{
     jwt_secret:string;
     jwt_short_time_secret:string;
+    expireTime:number;
 }
 
 interface IMongodbEnv{

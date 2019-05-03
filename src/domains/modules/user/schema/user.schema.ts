@@ -84,3 +84,4 @@ async function _comparePassword(candidatePassword:string, user): Promise<any> {
 };
 
 
+export { UserSchema };

@@ -1,86 +1,111 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { IUserDocument } from "./interfaces/mongoose/iuser.document";
-import { IUserModel } from "./interfaces/mongoose/IUserModel";
+import { IUserResponse } from "./interfaces/responses/iuser.response";
+import {UserSchema} from "./schema/user.schema";
 
 @Injectable()
 export class UserService {
 
-  constructor(@InjectModel('User') private readonly userModel: Model<IUserModel>) {}
+  constructor(
+    @InjectModel("User" ) private readonly userModel: Model<IUserDocument>
+    ) {}
 
-  public async createNewUser(user:any):Promise<any> {
+  public async createNewUser(user:any):Promise<IUserResponse | HttpException> {
       let newUser = <IUserDocument>(user);
       let previousUser =  await this.userModel.findOne({ userName : newUser.userName});
       if(previousUser){
-         return  {thrown:true, success:false, status:409,  message: "userName is already in use"};
+         return  new HttpException({
+                      status: HttpStatus.CONFLICT,
+                      error: `A user with a userName ${newUser.userName} already exist`,
+                    }, 409);
       }
       newUser.isLoggedIn = true;
       let newUserResult =  await this.userModel.create(newUser);
       if(newUserResult.errors){
-          return  {thrown:true, success:false,  status:422,  message: "db is currently unable to process request"};
+          return  new HttpException({
+                      status: HttpStatus.UNPROCESSABLE_ENTITY,
+                      error: 'DB is unable to process request',
+                    }, 422);
       }
-      return newUserResult;
+      return <IUserResponse>(newUserResult);
   }
 
 
-  public async getAuthorizedUser(auth:any):Promise<any> {
+  public async getAuthorizedUser(auth:any):Promise<IUserResponse | HttpException> {
       let authorizedUserResult = await this.userModel.findOne({ userName:auth.userName});
       if(!authorizedUserResult){
-            return  {thrown:true, status:401,  message: "no userName "+auth.userName+" currently exist"};
+            return new HttpException({
+                    status: HttpStatus.UNAUTHORIZED,
+                    error: `No user exist with a userName ${auth.userName}`,
+                  }, 401);
       }
       let passwordsMatch =   await UserSchema.methods.comparePassword( auth.password, authorizedUserResult);
       if(!passwordsMatch){
-            return  {thrown:true, status:401,  message: "userName or password is incorrect"};
+            return  new HttpException({
+                    status: HttpStatus.UNAUTHORIZED,
+                    error: 'The userName or password is incorrect',
+                  }, 401);
 
       }
-      var userProfile = <IUserDocument>authorizedUserResult;
-      userProfile.isLoggedIn = true;
-      let savedResult = await userProfile.save();
-      if(savedResult.errors){
-          return  {thrown:true, status:422,  message: "db is currently unable to process request"};
-      }
-      return authorizedUserResult;
+      // var userProfile = <IUserDocument>authorizedUserResult;
+      // userProfile.isLoggedIn = true;
+      // let savedResult = await userProfile.save();
+      // if(savedResult.errors){
+      //     return  new HttpException({
+      //                     status: HttpStatus.UNPROCESSABLE_ENTITY,
+      //                     error: 'DB is unable to process request',
+      //                   }, 422);
+      // }
+       return <IUserResponse>(authorizedUserResult);
   }
 
 
-  public async getByUsername(userName:string):Promise<any> {
-      let authUser =  await this.userModel.findOne({ userName : userName});
-      if(!authUser){
-            return  {thrown:true, status:404,  message: "userName does not exit"};
+  public async getByUsername(userName:string):Promise<IUserResponse | HttpException> {
+      let userResult =  await this.userModel.findOne({ userName : userName});
+      if(!userResult){
+            return  new HttpException({
+                          status: HttpStatus.UNPROCESSABLE_ENTITY,
+                          error: `No user exist with a userName ${userName}`,
+                        }, 404);
       }
-      return authUser;
+      return <IUserResponse>(userResult);
   }
 
-  public async getUserById( userId:string):Promise<any>{
-      let objectId = mongoose.Types.ObjectId;
-      if(! objectId.isValid(userId)){
-            return  {status:401,  message: "incorrect user id"};
+  public async getUserById( userId:string):Promise<IUserResponse | HttpException>{
+      let userResult = await this.userModel.findById(userId);
+      if(!userResult){
+        return  new HttpException({
+                      status: HttpStatus.UNPROCESSABLE_ENTITY,
+                      error: `No user exist with an id { ${userId} }`,
+                    }, 404);
       }
-      let result = await this.userModel.findById(userId);
-      return result;
+      return <IUserResponse>(userResult);
   }
 
-  public async updateUser(user:any):Promise<any> {
-      let objectId = mongoose.Types.ObjectId;
-      if(! objectId.isValid(user.id)){
-            return  {thrown:true, status:401,  message: "incorrect user id"};
-      }
+  public async updateUser(user:any):Promise<IUserResponse | HttpException>{
       let resultUserById = await this.userModel.findById(user.id);
       if(resultUserById){
-         return  {thrown:true, status:409,  message: "this user does not exist"};
+        return  new HttpException({
+                  status: HttpStatus.UNPROCESSABLE_ENTITY,
+                  error: `No user exist with an id { ${user.id} }`,
+                }, 404);
       }
       let savedResult = await resultUserById.save();
       if(savedResult.errors){
-          return  {status:422,  message: "db is currently unable to process request"};
+          return  new HttpException({
+                  status: HttpStatus.UNPROCESSABLE_ENTITY,
+                  error: 'DB is unable to process request',
+                }, 422);
       }
 
-      return savedResult;
+      return <IUserResponse>(savedResult);
 
   }
 
-    public async destroy() {
-    throw new Error('todo!');
-  }
+  //   public async destroy() {
+  //   throw new Error('todo!');
+  // }
 
 }
