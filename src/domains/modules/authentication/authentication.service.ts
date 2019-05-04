@@ -8,6 +8,7 @@ import { ConfigService } from "../../../core/modules/config/config.service";
 import { AuthenticationLoginDTO } from "./authenticationDTO/authentication.dto";
 import {IUserResponse} from "../user/interfaces/responses/iuser.response";
 import {IAuthResponse} from "./interfaces/iauth.response";
+import {JwtPayload} from "./interfaces/jwt-payload.interface";
 
 @Injectable()
 export class AuthenticationService {
@@ -18,9 +19,12 @@ export class AuthenticationService {
     private readonly jwtService: JwtService,) {}
 
     createToken(userId:string) {
-        const accessToken = this.jwtService.sign(userId);
+        let timeToExp = this.configService.get('auth').get('expireTime');
+        console.log(' createToken timeToExp ', timeToExp)
+        const user:JwtPayload = { id:userId};
+        const accessToken = this.jwtService.sign(user,  { expiresIn:timeToExp });
         return {
-          expiresIn:this.configService.get('auth').get('expireTime'),
+          expiresIn:timeToExp,
           accessToken,
         };
     }
@@ -28,23 +32,19 @@ export class AuthenticationService {
 
     async login( user:AuthenticationLoginDTO): Promise< IAuthResponse | HttpException >{
        const loginResult = await this.userService.getAuthorizedUser(user);
-       if( loginResult.hasOwnProperty('id')){
-           const loggedInUser = <IUserResponse>(loginResult);
-           const newToken = this.createToken(loggedInUser.id);
-           // TODO
-           // udpdate set up redis
-
-		   return  <IAuthResponse>({
-		    user:loggedInUser,
-		    token:newToken.accessToken
-		    })
-		}
-        return <HttpException>(loginResult);
+       const loggedInUser = <IUserResponse>(loginResult);
+       const newToken = this.createToken(loggedInUser.id);
+       // TODO
+       // udpdate set up redis
+       console.log('AuthenticationService login -- loggedInUser =  ', loggedInUser)
+       console.log('AuthenticationService login -- newToken.accessToken =  ', newToken.accessToken)
+       return  <IAuthResponse>({ user:loggedInUser, token:newToken.accessToken })
     }
 
 
 
-    async validateUser(payload: { userName: string  }): Promise< IUserResponse | HttpException > {
-          return  await this.userService.getByUsername(payload.userName);
+    async validateUser(payload: { id: string  }): Promise< any> {
+           console.log( 'AuthenticationService login --  validateUser =', payload)
+          return  await this.userService.getUserById(payload.id);
     }
 }

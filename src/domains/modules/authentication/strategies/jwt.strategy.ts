@@ -6,7 +6,7 @@ import { AuthenticationService } from '../authentication.service';
 import {ConfigService} from "../../../../core/modules/config/config.service";
 
 @Injectable()
-export  class JwtStrategy extends PassportStrategy(Strategy, "JWT") {
+export  class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(private readonly authenticationService: AuthenticationService,
      private readonly config: ConfigService) {
         super({
@@ -15,7 +15,8 @@ export  class JwtStrategy extends PassportStrategy(Strategy, "JWT") {
         });
     }
 
-   async validate(payload: JwtPayload) {
+   async validate(payload: JwtPayload,  done: Function) {
+   console.log(' JwtStrategy ---validate () - payload =', payload   );
     const user = await this.authenticationService.validateUser(payload);
     if (!user) {
       throw new UnauthorizedException();

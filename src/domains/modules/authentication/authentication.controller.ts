@@ -22,14 +22,15 @@ export class AuthenticationController {
 	@ApiResponse({ status: 404, description: 'Bad Request' })
 	@ApiResponse({ status: 401, description: 'Unauthorized' })
 	public async login(@Body() authLoginRequest: AuthenticationLoginDTO){
-		return await this.userService.getAuthorizedUser(authLoginRequest);
-
+	 let result  =  await this.authenticationService.login(authLoginRequest);
+	 console.log('AuthenticationController == result =', result)
+     return result;
 	}
 
 
 	@Post('logout')
 	@ApiBearerAuth()
-	@UseGuards(AuthGuard('JWT'))
+	@UseGuards(AuthGuard())
 	@ApiResponse({ status: 201, description: 'Successful logout' })
 	@ApiResponse({ status: 400, description: 'Bad Request' })
 	@ApiResponse({ status: 401, description: 'Unauthorized' })

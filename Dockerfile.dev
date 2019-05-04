@@ -11,8 +11,7 @@ COPY package.json /usr/src/app/package.json
 
 RUN npm install --prefix /usr/lib/node_modules/ -g typescript    && \
     npm install tsd -g && \
-    npm install typescript -g  && \
-    npm install tsoa -g
+    npm install typescript -g 
 
 
 COPY . /usr/src/app

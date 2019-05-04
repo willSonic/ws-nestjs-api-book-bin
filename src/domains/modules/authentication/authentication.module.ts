@@ -22,7 +22,7 @@ import {UserSchema} from "../user/schema/user.schema";
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) =>({
-        secretOrPrivateKey:config.get('auth').get('jwt_secret').toString() ,
+        secretOrPrivateKey:config.get('auth').get('jwt_secret'),
         signOptions: {
           expiresIn: config.get('auth').get('expireTime'),
         },
@@ -33,6 +33,6 @@ import {UserSchema} from "../user/schema/user.schema";
   ],
   controllers: [AuthenticationController],
   providers: [AuthenticationService, JwtStrategy],
-  exports: [AuthenticationService, JwtStrategy]
+  exports: [PassportModule, AuthenticationService]
 })
 export class AuthenticationModule {}

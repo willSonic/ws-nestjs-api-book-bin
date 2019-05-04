@@ -12,11 +12,11 @@ export class UserService {
     @InjectModel("User" ) private readonly userModel: Model<IUserDocument>
     ) {}
 
-  public async createNewUser(user:any):Promise<IUserResponse | HttpException> {
+  public async createNewUser(user:any):Promise<IUserResponse> {
       let newUser = <IUserDocument>(user);
       let previousUser =  await this.userModel.findOne({ userName : newUser.userName});
       if(previousUser){
-         return  new HttpException({
+         throw  new HttpException({
                       status: HttpStatus.CONFLICT,
                       error: `A user with a userName ${newUser.userName} already exist`,
                     }, 409);
@@ -24,7 +24,7 @@ export class UserService {
       newUser.isLoggedIn = true;
       let newUserResult =  await this.userModel.create(newUser);
       if(newUserResult.errors){
-          return  new HttpException({
+          throw  new HttpException({
                       status: HttpStatus.UNPROCESSABLE_ENTITY,
                       error: 'DB is unable to process request',
                     }, 422);
@@ -33,17 +33,17 @@ export class UserService {
   }
 
 
-  public async getAuthorizedUser(auth:any):Promise<IUserResponse | HttpException> {
+  public async getAuthorizedUser(auth:any):Promise<IUserResponse> {
       let authorizedUserResult = await this.userModel.findOne({ userName:auth.userName});
       if(!authorizedUserResult){
-            return new HttpException({
+            throw new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
                     error: `No user exist with a userName ${auth.userName}`,
                   }, 401);
       }
       let passwordsMatch =   await UserSchema.methods.comparePassword( auth.password, authorizedUserResult);
       if(!passwordsMatch){
-            return  new HttpException({
+            throw  new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
                     error: 'The userName or password is incorrect',
                   }, 401);
@@ -62,10 +62,10 @@ export class UserService {
   }
 
 
-  public async getByUsername(userName:string):Promise<IUserResponse | HttpException> {
+  public async getByUsername(userName:string):Promise<IUserResponse> {
       let userResult =  await this.userModel.findOne({ userName : userName});
       if(!userResult){
-            return  new HttpException({
+            throw  new HttpException({
                           status: HttpStatus.UNPROCESSABLE_ENTITY,
                           error: `No user exist with a userName ${userName}`,
                         }, 404);
@@ -73,10 +73,10 @@ export class UserService {
       return <IUserResponse>(userResult);
   }
 
-  public async getUserById( userId:string):Promise<IUserResponse | HttpException>{
+  public async getUserById( userId:string):Promise<IUserResponse>{
       let userResult = await this.userModel.findById(userId);
       if(!userResult){
-        return  new HttpException({
+          throw  new HttpException({
                       status: HttpStatus.UNPROCESSABLE_ENTITY,
                       error: `No user exist with an id { ${userId} }`,
                     }, 404);
@@ -84,17 +84,17 @@ export class UserService {
       return <IUserResponse>(userResult);
   }
 
-  public async updateUser(user:any):Promise<IUserResponse | HttpException>{
+  public async updateUser(user:any):Promise<IUserResponse>{
       let resultUserById = await this.userModel.findById(user.id);
       if(resultUserById){
-        return  new HttpException({
+          throw new HttpException({
                   status: HttpStatus.UNPROCESSABLE_ENTITY,
                   error: `No user exist with an id { ${user.id} }`,
                 }, 404);
       }
       let savedResult = await resultUserById.save();
       if(savedResult.errors){
-          return  new HttpException({
+           throw new HttpException({
                   status: HttpStatus.UNPROCESSABLE_ENTITY,
                   error: 'DB is unable to process request',
                 }, 422);

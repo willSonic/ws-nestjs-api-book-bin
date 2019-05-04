@@ -10,9 +10,10 @@ export class AuthenticationLoginDTO{
   readonly userName: string;
 
   @IsString()
-  @IsDefined()
-  @Length(8)
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S+$/)
+  @IsNotEmpty()
+  @MinLength(6)
+  @MaxLength(8)
+  //@Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S+$/)
   @ApiModelProperty()
   readonly password: string;
 }

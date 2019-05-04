@@ -2,26 +2,26 @@ version: '3'
 
 services:
 
-  ws-nestjs-api-book-bin:
-    restart: always
-    build:
-      context: ./.
-      dockerfile: ./Dockerfile.dev
-    image: local-ws-nestjs-api-book-bin-dev:latest
-    command: ['npm', 'run', 'start:dev']
-    container_name: ws-nestjs-api-book-bin-container
-    environment:
-        - loglevel=none
-    links:
-      - mongodb-primary
-      - redis
-    working_dir: "/usr/src/app"
-    volumes:
-        - "./.:/usr/src/app"
-        - "/usr/src/app/node_modules"
-    ports:
-        - "8080:8080"
-        - "5858:5858"
+#  ws-nestjs-api-book-bin:
+#    restart: always
+#    build:
+#      context: ./.
+#      dockerfile: ./Dockerfile.dev
+#    image: local-ws-nestjs-api-book-bin-dev:latest
+#    command: ['npm', 'run', 'start:dev']
+#    container_name: ws-nestjs-api-book-bin-container
+#    environment:
+#        - loglevel=none
+#    links:
+#      - mongodb-primary
+#      - redis
+#    working_dir: "/usr/src/app"
+#    volumes:
+#        - "./.:/usr/src/app"
+#        - "/usr/src/app/node_modules"
+#    ports:
+#        - "8080:8080"
+#        - "5858:5858"
 
   mongodb-primary:
     image: 'bitnami/mongodb:4.0'
