@@ -3,10 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { IUserDocument } from "../user/interfaces/mongoose/iuser.document";
+import { IUserDocument } from "../user/interfaces/mongoose/iUser.document";
 import { ConfigService } from "../../../core/modules/config/config.service";
 import { AuthenticationLoginDTO } from "./authenticationDTO/authentication.dto";
-import {IUserResponse} from "../user/interfaces/responses/iuser.response";
+import {IUserResponse} from "../user/interfaces/responses/iUser.response";
 import {IAuthResponse} from "./interfaces/iauth.response";
 import {JwtPayload} from "./interfaces/jwt-payload.interface";
 

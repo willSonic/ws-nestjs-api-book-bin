@@ -45,4 +45,5 @@ export class UserCreateDTO {
   @IsNotEmpty()
   @ApiModelProperty()
   readonly email: string;
+
 }

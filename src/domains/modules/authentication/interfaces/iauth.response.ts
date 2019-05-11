@@ -1,4 +1,4 @@
-import {IUserResponse} from "../../user/interfaces/responses/iuser.response";
+import {IUserResponse} from "../../user/interfaces/responses/iUser.response";
 
 export interface IAuthResponse {
     readonly user:IUserResponse;

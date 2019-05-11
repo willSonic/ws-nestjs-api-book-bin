@@ -1,5 +1,5 @@
 import {Schema} from "mongoose";
-import { IUserDocument } from "../interfaces/mongoose/iuser.document";
+import { IUserDocument } from "../interfaces/mongoose/iUser.document";
 
 import * as Bcrypt from 'bcrypt';
 

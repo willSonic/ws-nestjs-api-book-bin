@@ -15,7 +15,7 @@ import {UserSchema} from "../user/schema/user.schema";
      // handle circular dependency... we need UserModule here to check validation
     //  userModule will need  to use Authentication Services
     forwardRef(() => UserModule),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'jwt', property: 'user' }),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     JwtModule.registerAsync(
     {

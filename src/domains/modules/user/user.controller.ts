@@ -1,12 +1,12 @@
 import {Controller, Post, Get,Put, Response, Res, Req,
 HttpStatus,Param, Body, HttpException, UseGuards} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtAuthGuard } from "../authentication/guards/jwt.authentication.guard";
+import { JwtAuthGuard } from "../authentication/guards/jwt-auth.guard";
 import { UserService } from "../user/user.service";
 import { ApiResponse, ApiUseTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import {UserCreateDTO} from "./userDTO/user.create.dto";
 import {AuthenticationService} from "../authentication/authentication.service";
-import {IUserResponse} from "./interfaces/responses/iuser.response";
+import {IUserResponse} from "./interfaces/responses/iUser.response";
 import {IAuthResponse} from "../authentication/interfaces/iauth.response";
 import {UserUpdateDTO} from "./userDTO/user.update.dto";
 
@@ -39,6 +39,7 @@ export class UserController {
 
 
     @Get(':id')
+    @ApiBearerAuth()
     @ApiOperation({ title: 'Fetch User by id attribute' })
 	@ApiResponse({ status: 201, description: 'Successful Login' })
 	@ApiResponse({ status: 400, description: 'Bad Request' })

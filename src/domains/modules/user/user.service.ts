@@ -1,8 +1,8 @@
 import { Model } from 'mongoose';
 import { Injectable, NotAcceptableException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { IUserDocument } from "./interfaces/mongoose/iuser.document";
-import { IUserResponse } from "./interfaces/responses/iuser.response";
+import { IUserDocument } from "./interfaces/mongoose/iUser.document";
+import { IUserResponse } from "./interfaces/responses/iUser.response";
 import {UserSchema} from "./schema/user.schema";
 
 @Injectable()

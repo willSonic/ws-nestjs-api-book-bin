@@ -3,6 +3,9 @@ interface IExpressEnv{
    debug:number;
    host:string;
 }
+interface ISwaggerEnv{
+   path:string;
+}
 
 interface IJwtSecurityEnv{
     jwt_secret:string;
@@ -34,6 +37,7 @@ interface IBorrowTime{
 
 export interface EnvConfig {
      express:IExpressEnv;
+     swagger:ISwaggerEnv;
      auth:IJwtSecurityEnv;
      mongo:IMongodbEnv;
      redis:IRedisEnv;

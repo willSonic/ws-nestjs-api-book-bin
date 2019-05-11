@@ -4,7 +4,7 @@ import { UserService } from "../user/user.service";
 import { ApiResponse, ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthenticationService } from "./authentication.service";
 import { AuthenticationLoginDTO } from "./authenticationDTO/authentication.dto";
-import {IUserResponse} from "../user/interfaces/responses/iuser.response";
+import {IUserResponse} from "../user/interfaces/responses/iUser.response";
 
 
 @ApiUseTags('authentication')
