@@ -3,7 +3,7 @@ import { Injectable, NotAcceptableException, HttpException, HttpStatus } from '@
 import { InjectModel } from '@nestjs/mongoose';
 import { IUserDocument } from "./interfaces/mongoose/iUser.document";
 import { IUserResponse } from "./interfaces/responses/iUser.response";
-import {UserSchema} from "./schema/user.schema";
+import { UserSchema } from "./schema/user.schema";
 
 @Injectable()
 export class UserService {
