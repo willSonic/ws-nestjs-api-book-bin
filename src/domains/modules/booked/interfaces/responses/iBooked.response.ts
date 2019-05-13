@@ -10,3 +10,5 @@ export interface IBookedResponse{
   createdAt?: Date;
   modifiedAt?: Date
 }
+
+export type IBookedResponses = IBookedResponse[];

@@ -21,7 +21,7 @@ interface IMongodbEnv{
     urlDocker:string;
 }
 
-interface IRedisEnv{
+interface IRedisEnv {
     TTL:number;
     port:number;
     urlDocker:string;
