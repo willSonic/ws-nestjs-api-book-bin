@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 import { IBookedExpireEventDocument} from '../interfaces/mongoose/iBookedExpireEvent.document';
-import { getExpireTime} from '../../../../business-layer/utils/bizRules';
+import { ConfigService } from "../../../../core/modules/config";
 
 /**
  * MongooseSchema
@@ -24,7 +24,7 @@ import { getExpireTime} from '../../../../business-layer/utils/bizRules';
 
 BookedExpireEventSchema.index(
 {createdAt:1},
-{expireAfterSeconds: (getExpireTime()/1000) }
+{expireAfterSeconds: (ConfigService.getExpireTime()/1000) }
 );
 
 

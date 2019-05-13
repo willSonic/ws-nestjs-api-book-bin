@@ -8,7 +8,6 @@ import {ConfigService} from "../../../core/modules/config";
 @Injectable()
 export class BookedService {
   constructor(
-    private config: ConfigService,
     @InjectModel("Booked") private readonly bookedModel:Model<IBookedDocument>
     ) {}
 
@@ -20,7 +19,7 @@ export class BookedService {
         );
       if(previousBooked){
          previousBooked.active = true;
-         previousBooked.returnDate = this.config.createDate( this.config.getExpireTime() );
+         previousBooked.returnDate = ConfigService.createDate( ConfigService.getExpireTime() );
          previousBooked = await previousBooked.save();
          if(previousBooked.errors){
             throw new HttpException({

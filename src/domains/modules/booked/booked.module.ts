@@ -5,7 +5,7 @@ import { BookedService } from './booked.service';
 import {AuthenticationModule} from "../authentication/authentication.module";
 import {ConfigModule, ConfigService} from "../../../core/modules/config";
 import {UserModule} from "../user/user.module";
-import { BookedSchemaService} from "./schema/booked.schema.sevice";
+import { BookedSchema } from "./schema/booked.schema";
 
 @Module({
   imports: [
@@ -13,12 +13,12 @@ import { BookedSchemaService} from "./schema/booked.schema.sevice";
     UserModule,
     MongooseModule.forFeature([{
       name: 'Booked',
-      schema:  BookedSchemaService
+      schema:  BookedSchema
       }]),
     ConfigModule,
     ],
   controllers: [BookedController],
-  providers: [BookedService, ConfigService, BookedSchemaService],
+  providers: [BookedService, ConfigService ],
   exports:[BookedService]
 })
 export class BookedModule {}

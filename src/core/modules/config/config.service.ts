@@ -12,7 +12,7 @@ export class ConfigService {
       BOOK_USER_WAIT_LISTED:'BOOK_USER_WAIT_LISTED'
   };
 
-  readonly borrowerRules = {
+  static  borrowerRules = {
     // ten days
     tenDayMS:7*24*60*60*1000,
 
@@ -37,13 +37,6 @@ export class ConfigService {
     return this.env[key];
   }
 
-  getExpireTime():number {
-    return this.borrowerRules[ `${this.get('borrowTime').get('expireTime')}` ];
-  };
-
-  createDate( time:number ):any {
-     return new Date(Date.now() + time);
-  };
 
   createMessageText(type, options):any{
     let message='';
@@ -59,4 +52,19 @@ export class ConfigService {
     }
     return message;
   };
+
+
+
+  static createDate( time:number ):any {
+     return new Date(Date.now() + time);
+  };
+
+
+
+
+  static getExpireTime():any {
+    const env  = (config as any) as EnvConfig;
+    return this.borrowerRules[ env['borrowTime.expireTime'] ];
+  };
+
 }
