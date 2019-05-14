@@ -11,7 +11,7 @@ import { IProfileDocument } from '../interfaces/mongoose/iProfile.document';
 
   user:{
         type: Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'users',
         required: true,
   },
   checkedOutCount:  {

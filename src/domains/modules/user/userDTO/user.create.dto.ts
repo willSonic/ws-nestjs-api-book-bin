@@ -37,7 +37,7 @@ export class UserCreateDTO {
   @IsString()
   @IsDefined()
   @Length(8)
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S+$/)
+  //@Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S+$/)
   @ApiModelProperty()
   readonly password:string;
 

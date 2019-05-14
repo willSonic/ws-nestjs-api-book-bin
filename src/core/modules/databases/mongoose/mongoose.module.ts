@@ -9,7 +9,7 @@ import { ConfigModule, ConfigService  } from "../../config";
             inject:  [ConfigService],
             useFactory: async (config: ConfigService) =>
                   ({
-                    uri: config.get('mongo').get('urlDocker'),
+                    uri: config.get('mongo').get('urlClient'),
                     options:{
                       useNewUrlParser: true,
                      useFindAndModify: false,

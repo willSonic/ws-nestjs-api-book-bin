@@ -8,7 +8,7 @@ import { IProfileDocument } from "./interfaces/mongoose/iProfile.document";
 export class ProfilesService {
 
   constructor(
-    @InjectModel("Profile" ) private readonly profileModel: Model<IProfileDocument>
+    @InjectModel("profiles" ) private readonly profileModel: Model<IProfileDocument>
   ) {}
 
   public async createNewProfile(userId:string):Promise<IProfileResponse> {
@@ -21,10 +21,12 @@ export class ProfilesService {
       }
       try{
          let newProfileResult =  await this.profileModel.create({ user : userId});
-         let newProfileWithSubs = await newProfileResult.populate('user')
-        .execPopulate();
-          return <IProfileResponse>(newProfileWithSubs);
+         console.log('ProfilesService createNewProfile--- newProfileResult =', newProfileResult._id );
+         let newProfileWithSubs = await this.profileModel.findById(newProfileResult._id).populate('user');
+         console.log('ProfilesService createNewProfile--- newProfileWithSubs =', newProfileWithSubs );
+         return <IProfileResponse>(newProfileWithSubs);
       }catch(error){
+           console.log('ProfilesService createNewProfile--- error =', error )
           throw  new HttpException({
               status: HttpStatus.UNPROCESSABLE_ENTITY,
               error: 'DB is unable to process request',

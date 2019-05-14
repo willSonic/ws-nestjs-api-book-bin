@@ -10,7 +10,7 @@ import {ConfigModule} from "../../../core/modules/config/config.module";
 @Module({
   imports: [
     forwardRef(() => AuthenticationModule),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: 'users', schema: UserSchema }]),
     ConfigModule,
     ],
   controllers: [UserController],

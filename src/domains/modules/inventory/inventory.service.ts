@@ -2,14 +2,13 @@ import { Model } from 'mongoose';
 import { Injectable, NotAcceptableException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { IInventoryDocument } from "./interfaces/mongoose/iInventory.document";
-import { IBookedResponse } from "../booked/interfaces/responses/iBooked.response";
 import { IInventoryResponse} from "./interfaces/responses/iInventory.response";
 
 @Injectable()
 export class InventoryService {
 
   constructor(
-    @InjectModel("User" ) private readonly inventoryModel: Model<IInventoryDocument>
+    @InjectModel("Inventory" ) private readonly inventoryModel: Model<IInventoryDocument>
     ) {}
 
   public async createNewInventory(inventory:any):Promise<IInventoryResponse> {

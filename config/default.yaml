@@ -17,7 +17,7 @@ mongo:
     replicaSetName: 'bookBinRS'
     replicaPrimary: 'mongodb-primary'
     dataBaseName: 'book-bin'
-    urlClient: 'mongodb://localhost:27017/book-bin'
+    urlClient: 'mongodb://localhost:27017/book-bin-test'
     urlDocker: 'mongodb://mongodb-primary:27017/book-bin?replicaSet=bookBinRS'
     #password
     #login

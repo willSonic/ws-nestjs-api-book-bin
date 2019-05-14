@@ -11,8 +11,8 @@ import {IAuthResponse} from "../authentication/interfaces/iauth.response";
 import {UserUpdateDTO} from "./userDTO/user.update.dto";
 
 
-@ApiUseTags('user')
-@Controller('user')
+@ApiUseTags('users')
+@Controller('users')
 export class UserController {
 	constructor(
         private readonly authenticationService: AuthenticationService,
@@ -40,12 +40,12 @@ export class UserController {
 
     @Get(':id')
     @ApiBearerAuth()
+	@UseGuards(AuthGuard())
     @ApiOperation({ title: 'Fetch User by id attribute' })
 	@ApiResponse({ status: 201, description: 'Successful Login' })
 	@ApiResponse({ status: 400, description: 'Bad Request' })
 	@ApiResponse({ status: 404, description: 'Bad Request' })
 	@ApiResponse({ status: 401, description: 'Unauthorized' })
-	@UseGuards(AuthGuard())
     public async getUserById(@Param('id') id:string ){
         return await this.userService.getUserById(id);
     }
@@ -64,6 +64,7 @@ export class UserController {
     @Put()
     @ApiOperation({ title: 'Update Current User' })
 	@ApiBearerAuth()
+	@UseGuards(AuthGuard())
 	@ApiResponse({ status: 201, description: 'Successful update of user' })
 	@ApiResponse({ status: 400, description: 'Bad Request' })
 	@ApiResponse({ status: 404, description: 'Bad Request' })

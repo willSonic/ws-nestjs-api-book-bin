@@ -9,13 +9,12 @@ import {ConfigService} from "../../../core/modules/config";
 export class BookedExpireEventsService {
 
   constructor(
-        @InjectModel("BookedExpireEvents" ) private  bookedExpireEventModel: Model<IBookedExpireEventDocument>,
-        private readonly configService:ConfigService
+        @InjectModel("BookedExpireEvent" ) private  bookedExpireEventModel: Model<IBookedExpireEventDocument>
       ) {
 
       this.bookedExpireEventModel.watch().on('change', (change)=>{
        console.log('BookExpireEventRepo   -- change.operationType === ', change.operationType );
-       console.log('BookExpireEventRepo   -- getExpireTime === ', configService.getExpireTime()/1000 );
+       console.log('BookExpireEventRepo   -- getExpireTime === ', ConfigService.getExpireTime()/1000 );
             if(change.operationType === 'delete') {
                 console.log('BookExpireEventRepo   -- change.documentKey._id =', change.documentKey._id);
             }

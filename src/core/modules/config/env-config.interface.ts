@@ -19,6 +19,7 @@ interface IMongodbEnv{
     replicaPrimary:string;
     dataBaseName:string;
     urlDocker:string;
+    urlClient:string;
 }
 
 interface IRedisEnv {
